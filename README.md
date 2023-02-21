@@ -67,11 +67,6 @@ cargo install fake-file
 
 ## Benchmarking the Project
 
-For benchmarking and measuring performance, this project leverages
-[criterion][criterion] and a `test_utils` feature flag
-for integrating [proptest][proptest] within the suite for working with
-[strategies][strategies] and sampling from randomly generated values.
-
 - Run benchmarks
 
   ```console
