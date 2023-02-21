@@ -26,7 +26,7 @@ fn prep_generate(path: &Path) {
 #[doc(hidden)]
 fn balanced_structure(c: &mut Criterion) {
     // Get the Bench path and make sure it exists
-    let mut bench_scratch_space = Path::new(BENCH_PATH.as_str());
+    let bench_scratch_space = Path::new(BENCH_PATH.as_str());
     ensure_path_exists_and_is_dir(&bench_scratch_space).unwrap();
     // Get the input path and make sure it exists and is empty
     let balanced_path = bench_scratch_space.join("balanced");
