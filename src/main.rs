@@ -28,6 +28,9 @@ fn main() {
             println!("Output path already exists. Use --force to overwrite.");
             std::process::exit(0);
         }
+        if cli.verbose {
+            println!("WARN: Output path already exists. Overwriting.");
+        }
         // Delete the output path
         std::fs::remove_dir_all(&output).unwrap();
     }
