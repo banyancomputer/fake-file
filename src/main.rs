@@ -15,11 +15,9 @@ fn main() {
 
     // If the output path is not specified, use the to_path_string() method
     // to get the current working directory.
-    let output = if cli.output == "" {
-        PathBuf::from(s.to_path_string())
-    } else {
-        PathBuf::from(cli.output)
-    };
+
+    let mut output = PathBuf::from(cli.output);
+    output.push(s.to_path_string());
 
     // If the output path exists
     if output.exists() {
@@ -43,7 +41,7 @@ fn main() {
 
     let now = std::time::Instant::now();
 
-    s.generate(& output).map_err(|e| {
+    s.generate(&output).map_err(|e| {
         println!("Error Generating FS: {}", e);
     }).unwrap();
 
