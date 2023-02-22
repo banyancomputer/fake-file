@@ -15,10 +15,16 @@ use crate::utils::fs_utils::create_random_file;
 /// This is used for generating random data for testing
 #[derive(Serialize, Deserialize, Clone, Debug, strum::Display)]
 pub enum Strategy {
-    /// Generate a balanced file structure
-    Balanced,
-    /// Generate a Random file structure
-    Random,
+    /// Generate exactly the file structure requested
+    Simple,
+    /// Generate a wide version of the file structure requested
+    Wide,
+    /// Generate a deep version of the file structure requested
+    Deep,
+    /// Generate a very shallow version of the file structure requested
+    Directory,
+    /// Generate one big file
+    File,
 }
 
 /// Everything is a file in Unix :) including directories
@@ -32,8 +38,20 @@ pub struct Structure {
     pub depth: usize,
     /// How much data should be in the file
     pub target_size: usize,
-    /// What strategy to use for generating the file structure
-    pub strategy: Strategy,
+}
+
+impl std::str::FromStr for Strategy {
+    type Err = String;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Simple" => Ok(Strategy::Simple),
+            "Wide" => Ok(Strategy::Wide),
+            "Deep" => Ok(Strategy::Deep),
+            "Directory" => Ok(Strategy::Directory),
+            "File" => Ok(Strategy::File),
+            _ => Err(format!("Invalid strategy: {}", s)),
+        }
+    }
 }
 
 impl Structure {
@@ -44,13 +62,35 @@ impl Structure {
     /// target_size: Desired size of the file structure, upper bound
     /// strategy: The strategy to use for generating the file structure
     /// utf8_only: Whether or not files can include non-utf8 characters
-    pub fn new(width: usize, depth: usize, target_size: usize, strategy: Strategy) -> Self {
+    pub fn new(width: usize, depth: usize, target_size: usize) -> Self {
         Self {
             width,
             depth,
             target_size,
-            strategy,
         }
+    }
+
+    pub fn with_strategy(&mut self, strategy: Strategy) -> &mut Self {
+        match strategy {
+            Strategy::Wide => {
+                self.width = self.width * 2;
+                self.depth = self.depth / 2;
+            }
+            Strategy::Deep => {
+                self.width = self.width / 2;
+                self.depth = self.depth * 2;
+            }
+            Strategy::Directory => {
+                self.width = self.width;
+                self.depth = 1;
+            }
+            Strategy::File => {
+                self.width = 1;
+                self.depth = 0;
+            }
+            _ => {  }
+        }
+        self
     }
 
     /// Convert the FileStructure to a string that can be used as a filename
@@ -61,15 +101,13 @@ impl Structure {
     ///    4,                               // width
     ///   4,                               // depth
     ///  1024 * 1024,                     // target size in bytes (1Mb)
-    /// Strategy::Balanced, // Balanced
     /// );
-    /// assert_eq!(s.to_path_string(), "w4_d4_s1048576_balanced");
+    /// assert_eq!(s.to_path_string(), "w4_d4_s1048576");
     /// ```
     pub fn to_path_string(&self) -> String {
-        let strategy_str: String = self.strategy.to_string();
         format!(
-            "w{}_d{}_s{}_{}",
-            self.width, self.depth, self.target_size, strategy_str
+            "w{}_d{}_s{}",
+            self.width, self.depth, self.target_size
         )
     }
 
@@ -104,10 +142,9 @@ impl Structure {
                 self.width,
                 self.depth - 1,
                 target_size,
-                self.strategy.clone(),
             )
-            .generate(&new_path)
-            .unwrap();
+                .generate(&new_path)
+                .unwrap();
         }
         Ok(())
     }

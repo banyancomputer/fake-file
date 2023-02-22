@@ -4,7 +4,7 @@ use std::{env, fs, path::Path, time};
 
 use fake_file::{
     utils::fs_utils::{ensure_path_exists_and_is_dir, ensure_path_exists_and_is_empty_dir},
-    Strategy, Structure,
+    Structure,
 };
 
 // Configure the Benching Framework from the Environment
@@ -24,7 +24,7 @@ fn prep_generate(path: &Path) {
 
 /// Bench the generation of a file structure
 #[doc(hidden)]
-fn balanced_structure(c: &mut Criterion) {
+fn structure(c: &mut Criterion) {
     // Get the Bench path and make sure it exists
     let bench_scratch_space = Path::new(BENCH_PATH.as_str());
     ensure_path_exists_and_is_dir(&bench_scratch_space).unwrap();
@@ -36,7 +36,6 @@ fn balanced_structure(c: &mut Criterion) {
         4,                  // width
         4,                  // depth
         1024 * 1024 * 1024, // target size in bytes (1Gb)
-        Strategy::Balanced, // Balanced
     );
     // Get a path to the file structure
     let structure_path = structure.to_path_string();
@@ -66,6 +65,6 @@ fn balanced_structure(c: &mut Criterion) {
 criterion_group! {
     name = benches;
     config = Criterion::default().sample_size(10).measurement_time(time::Duration::from_secs(30));
-    targets = balanced_structure
+    targets = structure
 }
 criterion_main!(benches);

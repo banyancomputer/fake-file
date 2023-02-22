@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod test {
-    use fake_file::{Strategy, Structure};
+    use fake_file::Structure;
     use fs_extra::dir::get_size;
     use std::{fs, path::Path};
 
@@ -17,7 +17,7 @@ mod test {
         fs::remove_dir_all(&test_scratch_space).unwrap_or(());
         fs::create_dir_all(&test_scratch_space).unwrap();
         // Create a file structure
-        let structure = Structure::new(TEST_WIDTH, TEST_DEPTH, TEST_SIZE, Strategy::Balanced);
+        let structure = Structure::new(TEST_WIDTH, TEST_DEPTH, TEST_SIZE);
         // Push another path onto the scratch space
         let test_scratch_space = test_scratch_space.join(structure.to_path_string());
         // Generate the file structure
