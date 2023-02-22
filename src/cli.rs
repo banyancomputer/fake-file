@@ -17,4 +17,6 @@ pub struct Args {
     pub output: String,
     #[arg(short, long, help = "Force overwrite", default_value = "false")]
     pub force: bool,
+    #[arg(short, long, help = "Verbose output", default_value = "false")]
+    pub verbose: bool,
 }

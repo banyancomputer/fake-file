@@ -32,8 +32,20 @@ fn main() {
         std::fs::remove_dir_all(&output).unwrap();
     }
 
+    // If verbose output is enabled, print the structure
+    if cli.verbose {
+        println!("Generating File Structure: {:?}", s);
+        println!("Output Path: {:?}", output);
+    }
+
+    let now = std::time::Instant::now();
 
     s.generate(& output).map_err(|e| {
         println!("Error Generating FS: {}", e);
     }).unwrap();
+
+    let elapsed = now.elapsed().as_secs_f64();
+    if cli.verbose {
+        println!("Completed in: {:?} s", elapsed);
+    }
 }
