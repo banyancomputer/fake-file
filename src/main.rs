@@ -10,8 +10,7 @@ mod cli;
 fn main() {
     // Parse command line arguments. see args.rs
     let cli = cli::Args::parse();
-    let mut binding = Structure::new(cli.width, cli.depth, cli.size);
-    let s = binding.with_strategy(cli.strategy);
+    let  s = Structure::new(cli.width, cli.depth, cli.size, cli.strategy);
 
     // If the output path is not specified, use the to_path_string() method
     // to get the current working directory.
@@ -24,10 +23,12 @@ fn main() {
         // If the force flag is not set, exit with an error.
         if !cli.force {
             println!("Output path already exists. Use --force to overwrite.");
+            println!("Path: {:?}", output);
             std::process::exit(0);
         }
         if cli.verbose {
             println!("WARN: Output path already exists. Overwriting.");
+            println!("Path: {:?}", output);
         }
         // Delete the output path
         std::fs::remove_dir_all(&output).unwrap();

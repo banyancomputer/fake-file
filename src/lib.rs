@@ -62,35 +62,45 @@ impl Structure {
     /// target_size: Desired size of the file structure, upper bound
     /// strategy: The strategy to use for generating the file structure
     /// utf8_only: Whether or not files can include non-utf8 characters
-    pub fn new(width: usize, depth: usize, target_size: usize) -> Self {
-        Self {
-            width,
-            depth,
-            target_size,
-        }
-    }
-
-    pub fn with_strategy(&mut self, strategy: Strategy) -> &mut Self {
-        match strategy {
+    pub fn new(width: usize, depth: usize, target_size: usize, strategy: Strategy) -> Self {
+        let s = match strategy {
             Strategy::Wide => {
-                self.width = self.width * 2;
-                self.depth = self.depth / 2;
-            }
+                Structure {
+                    width: width * 2,
+                    depth: depth / 2,
+                    target_size,
+                }
+            },
             Strategy::Deep => {
-                self.width = self.width / 2;
-                self.depth = self.depth * 2;
-            }
+                Structure {
+                    width: width / 2,
+                    depth: depth * 2,
+                    target_size,
+                }
+            },
             Strategy::Directory => {
-                self.width = self.width;
-                self.depth = 1;
-            }
+                Structure {
+                    width: 0,
+                    depth: 0,
+                    target_size,
+                }
+            },
             Strategy::File => {
-                self.width = 1;
-                self.depth = 0;
+                Structure {
+                    width: 0,
+                    depth: 0,
+                    target_size,
+                }
+            },
+            _ => {
+                Structure {
+                    width,
+                    depth,
+                    target_size,
+                }
             }
-            _ => {  }
-        }
-        self
+        };
+        s
     }
 
     /// Convert the FileStructure to a string that can be used as a filename
@@ -100,7 +110,8 @@ impl Structure {
     /// let s = Structure::new(
     ///    4,                               // width
     ///   4,                               // depth
-    ///  1024 * 1024,                     // target size in bytes (1Mb)
+    ///  1024 * 1024,
+    /// Strategy::Simple                   // target size in bytes (1Mb)
     /// );
     /// assert_eq!(s.to_path_string(), "w4_d4_s1048576");
     /// ```
@@ -142,6 +153,7 @@ impl Structure {
                 self.width,
                 self.depth - 1,
                 target_size,
+                Strategy::Simple,
             )
                 .generate(&new_path)
                 .unwrap();
