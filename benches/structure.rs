@@ -3,8 +3,8 @@ use lazy_static::lazy_static;
 use std::{env, fs, path::Path, time};
 
 use fake_file::{
-    utils::fs_utils::{ensure_path_exists_and_is_dir, ensure_path_exists_and_is_empty_dir},
-    Structure, Strategy
+    utils::{ensure_path_exists_and_is_dir, ensure_path_exists_and_is_empty_dir},
+    Strategy, Structure,
 };
 
 // Configure the Benching Framework from the Environment
@@ -36,7 +36,7 @@ fn structure(c: &mut Criterion) {
         4,                  // width
         4,                  // depth
         1024 * 1024 * 1024, // target size in bytes (1Gb)
-        Strategy::Simple, // strategy
+        Strategy::Simple,   // strategy
     );
     // Get a path to the file structure
     let structure_path = structure.to_path_string();

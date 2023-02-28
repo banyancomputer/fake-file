@@ -1,6 +1,5 @@
-use clap::{Parser};
+use clap::Parser;
 use fake_file::Strategy;
-
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]

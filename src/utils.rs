@@ -6,6 +6,7 @@ use std::{
     path::Path,
 };
 
+// TODO: This should be Kb in a future version
 /// Creates a random file at the given path with the given size
 /// # Arguments
 /// * `path` - The path to create the file at
@@ -14,7 +15,7 @@ use std::{
 /// Panics if the file cannot be created
 /// # Examples
 /// ```no_run
-/// use fake_file::utils::fs_utils::create_random_file;
+/// use fake_file::utils::create_random_file;
 /// let path = std::path::Path::new("test.txt");
 /// create_random_file(&path, 1024);
 /// ```
@@ -46,11 +47,10 @@ pub fn create_random_file(path: &Path, size: usize) {
 /// Panics if the path exists but is not a directory
 /// # Examples
 /// ```no_run
-/// use fake_file::utils::fs_utils::ensure_path_exists_and_is_dir;
+/// use fake_file::utils::ensure_path_exists_and_is_dir;
 /// let path = std::path::Path::new("test");
 /// ensure_path_exists_and_is_dir(&path).unwrap();
 /// ```
-#[doc(hidden)]
 pub fn ensure_path_exists_and_is_dir(path: &Path) -> Result<()> {
     if !path.exists() {
         // create path if it doesn't exist
@@ -73,11 +73,10 @@ pub fn ensure_path_exists_and_is_dir(path: &Path) -> Result<()> {
 /// Panics if the path is not empty and force is false.
 /// # Examples
 /// ```no_run
-/// use fake_file::utils::fs_utils::ensure_path_exists_and_is_empty_dir;
+/// use fake_file::utils::ensure_path_exists_and_is_empty_dir;
 /// let path = std::path::Path::new("test");
 /// ensure_path_exists_and_is_empty_dir(&path, false).unwrap();
 /// ```
-#[doc(hidden)]
 pub fn ensure_path_exists_and_is_empty_dir(path: &Path, force: bool) -> Result<()> {
     // Check the path exists and is a directory
     ensure_path_exists_and_is_dir(path)?;

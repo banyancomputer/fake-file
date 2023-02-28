@@ -1,8 +1,8 @@
 //! fake-file
 
-use std::path::PathBuf;
 use clap::Parser;
-use fake_file::{Structure};
+use fake_file::Structure;
+use std::path::PathBuf;
 
 mod cli;
 
@@ -10,7 +10,7 @@ mod cli;
 fn main() {
     // Parse command line arguments. see args.rs
     let cli = cli::Args::parse();
-    let  s = Structure::new(cli.width, cli.depth, cli.size, cli.strategy);
+    let s = Structure::new(cli.width, cli.depth, cli.size, cli.strategy);
 
     // If the output path is not specified, use the to_path_string() method
     // to get the current working directory.
@@ -42,9 +42,11 @@ fn main() {
 
     let now = std::time::Instant::now();
 
-    s.generate(&output).map_err(|e| {
-        println!("Error Generating FS: {}", e);
-    }).unwrap();
+    s.generate(&output)
+        .map_err(|e| {
+            println!("Error Generating File Structure: {}", e);
+        })
+        .unwrap();
 
     let elapsed = now.elapsed().as_secs_f64();
     if cli.verbose {
