@@ -7,6 +7,8 @@ use anyhow::{Error, Result};
 use serde::{Deserialize, Serialize};
 use std::{fs, path::Path};
 
+// fake-file is a library for generating random file structures with certain properties.
+
 /// Crate utility functions
 pub mod utils;
 
@@ -20,7 +22,7 @@ pub enum Strategy {
     Wide,
     /// Generate a deep version of the file structure requested -- twice as deep, half as wide
     Deep,
-    /// Generate a very shallow version of the file structure requested -- <wide> files in a single directory
+    /// Generate a very shallow version of the file structure requested -- `wide` files in a single directory
     Directory,
     /// Generate one big file with the requested size at the specified path
     File,
@@ -46,7 +48,7 @@ impl std::str::FromStr for Strategy {
     /// # Arguments
     /// s: The string to convert
     /// # Returns
-    /// Result<Strategy>
+    /// `Result<Strategy>`
     /// # Panics
     /// Panics if the string is not a valid strategy
     /// # Examples
