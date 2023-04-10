@@ -101,7 +101,7 @@ impl Structure {
             },
             Strategy::Directory => Structure {
                 width: 0,
-                depth: 0,
+                depth: 1,
                 target_size,
             },
             Strategy::File => Structure {
