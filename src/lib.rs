@@ -100,13 +100,13 @@ impl Structure {
                 target_size,
             },
             Strategy::Directory => Structure {
-                width: 0,
+                width: width,
                 depth: 1,
                 target_size,
             },
             Strategy::File => Structure {
-                width: 0,
-                depth: 0,
+                width: 1,
+                depth: 1,
                 target_size,
             },
             _ => Structure {
